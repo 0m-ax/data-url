@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>data:</title>
+    <style>
+        iframe {
+            width: 100%;
+            height: 100%;
+            padding: 0px;
+            margin: 0px;
+            border: 0px;
+        }
+
+        body,
+        html {
+            width: 100%;
+            height: 100%;
+            margin: 0px;
+            padding: 0px;
+            overflow: hidden;
+        }
+
+        input {
+            display: block;
+            margin: auto;
+            font-size: 2em;
+        }
+
+        #content {
+            color: #ffffff;
+            background-color: #484848;
+            font-family: sans-serif;
+            width: 100%;
+            height: 100%;
+        }
+
+        .header {
+            width: 100%;
+            height: 100%;
+        }
+
+        .header-text {
+            width: 100%;
+            text-align: center;
+            position: absolute;
+            top: 50%;
+            transform: translate(0%, -50%);
+        }
+
+        h1 {
+            text-align: center;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="content">
+        <div class="header">
+            <div class="header-text">
+                <h1>Data URL link</h1>
+                <input id="input" placeholder="data:text/plain,hi">
+                <input id="output" disabled>
+            </div>
+        </div>
+        <div class="content">
+
+        </div>
+    </div>
+    <script>
+        let data = false;
+        if (location.hash) {
+            data = true;
+            let url = 'data:' + location.hash.substr(1)
+            console.log(url)
+            let frame = document.createElement('iframe')
+            frame.src = url;
+            document.body.appendChild(frame)
+        }
+    </script>
+    <noscript>
+        This site works best with JS enabled however if you wish to view the content replace {{proto}}://{{domain}}# with data: to
+        view the content
+    </noscript>
+
+    <script>
+        if (!data) {
+            document.getElementById('content').classList.remove('hidden')
+            document.getElementById('input').onkeyup = function () {
+                document.getElementById('output').value = "{{proto}}://{{domain}}#" + this.value.substr(5)
+            }
+        }
+    </script>
+
+</body>
+
+</html>
