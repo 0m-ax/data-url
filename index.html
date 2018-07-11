@@ -42,7 +42,9 @@
             width: 100%;
             height: 100%;
         }
-
+        .hidden{
+            display: none;
+        }
         .header-text {
             width: 100%;
             text-align: center;
@@ -58,7 +60,7 @@
 </head>
 
 <body>
-    <div id="content">
+    <div id="content"  class="hidden">
         <div class="header">
             <div class="header-text">
                 <h1>Data URL link</h1>
@@ -77,6 +79,7 @@
             let url = 'data:' + location.hash.substr(1)
             console.log(url)
             let frame = document.createElement('iframe')
+            frame.setAttribute('sandbox','allow-forms allow-scripts')
             frame.src = url;
             document.body.appendChild(frame)
         }
@@ -85,12 +88,11 @@
         This site works best with JS enabled however if you wish to view the content replace {{proto}}://{{domain}}# with data: to
         view the content
     </noscript>
-
     <script>
         if (!data) {
             document.getElementById('content').classList.remove('hidden')
-            document.getElementById('input').onkeyup = function () {
-                document.getElementById('output').value = "{{proto}}://{{domain}}#" + this.value.substr(5)
+            document.getElementById('input').onchange = function () {
+                document.getElementById('output').value = window.location.href+"#" + this.value.substr(5)
             }
         }
     </script>
