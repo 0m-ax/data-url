@@ -54,7 +54,16 @@
             top: 50%;
             transform: translate(0%, -50%);
         }
-
+        #link{
+            display: block;
+            font-size: 2em;
+        }
+        #link:hover{
+            color: #ffffff;
+        }
+        #link:visited{
+            color: #ffffff;
+        }
         h1 {
             text-align: center;
         }
@@ -62,7 +71,7 @@
 </head>
 
 <body>
-    <div id="content" class="hidden">
+    <div id="content">
         <a href="https://github.com/initd-daemon/data-url" class="github-corner" aria-label="View source on Github">
             <svg width="80" height="80" viewBox="0 0 250 250" style="fill:#fff; color:#151513; position: fixed; top: 0; border: 0; right: 0;"
                 aria-hidden="true">
@@ -107,6 +116,7 @@
                 <h1>Data URL link</h1>
                 <input id="input" placeholder="data:text/plain,hi">
                 <input id="output" disabled>
+                <a href="#" id="link">Open</a>
             </div>
         </div>
         <div class="content">
@@ -114,30 +124,32 @@
         </div>
     </div>
     <script>
-        let data = false;
-        if (location.hash) {
-            data = true;
-            let url = 'data:' + location.hash.substr(1)
-            console.log(url)
-            let frame = document.createElement('iframe')
-            frame.setAttribute('sandbox', 'allow-forms allow-scripts')
-            frame.src = url;
-            document.body.appendChild(frame)
+        document.getElementById('input').onchange = function () {
+            let link = document.location.protocol +"//"+ document.location.hostname + (document.location.port?':'+document.location.port:'') + document.location.pathname + "#" + this.value.substr(5)
+            document.getElementById('link').href = link
+            document.getElementById('output').value = link
         }
+        function update(){
+            let data = location.hash.substr(1)
+            console.log(data)
+            if(data){
+                document.getElementById('content').classList.add('hidden')
+                let url = 'data:' + data
+                let iframe = document.createElement('iframe')
+                iframe.setAttribute('sandbox', 'allow-forms allow-scripts')
+                iframe.src = url;
+                document.body.appendChild(iframe)
+            }else{
+                document.getElementById('content').classList.remove('hidden')
+            }
+        }
+        update()
+        window.onhashchange = update;
     </script>
     <noscript>
         This site works best with JS enabled however if you wish to view the content replace {{proto}}://{{domain}}# with data: to
         view the content
     </noscript>
-    <script>
-        if (!data) {
-            document.getElementById('content').classList.remove('hidden')
-            document.getElementById('input').onchange = function () {
-                document.getElementById('output').value = window.location.href + "#" + this.value.substr(5)
-            }
-        }
-    </script>
-
 </body>
 
 </html>
